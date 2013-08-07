@@ -477,7 +477,7 @@ public class InAppBrowser extends CordovaPlugin {
                 // Close button
                 Button close = new Button(cordova.getActivity());
                 RelativeLayout.LayoutParams closeLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-                closeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                closeLayoutParams.addRule(RelativeLayout.LEFT_OF, 6);
                 close.setLayoutParams(closeLayoutParams);
                 forward.setContentDescription("Close Button");
                 close.setId(5);
@@ -487,7 +487,22 @@ public class InAppBrowser extends CordovaPlugin {
                         closeDialog();
                     }
                 });
-
+                
+                // Open external button
+                Button external = new Button(cordova.getActivity());
+                RelativeLayout.LayoutParams externalLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                externalLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                external.setLayoutParams(externalLayoutParams);
+                external.setContentDescription("Open in external browser");
+                external.setId(6);
+                external.setText("Open");
+                external.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                    	openExternal(inAppWebView.getUrl());
+                    	closeDialog();
+                    }
+                });
+                
                 // WebView
                 inAppWebView = new WebView(cordova.getActivity());
                 inAppWebView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -531,6 +546,7 @@ public class InAppBrowser extends CordovaPlugin {
                 toolbar.addView(actionButtonContainer);
                 toolbar.addView(edittext);
                 toolbar.addView(close);
+                toolbar.addView(external);
 
                 // Don't add the toolbar if its been disabled
                 if (getShowLocationBar()) {
